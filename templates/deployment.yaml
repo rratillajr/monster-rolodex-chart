@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "monster-rolodex.fullname" . }}
+  labels:
+    app: {{ template "monster-rolodex.name" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "monster-rolodex.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "monster-rolodex.name" . }}
+    spec:
+      containers:
+        - name: {{ template "monster-rolodex.name" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+          resources:
+            {{ toYaml .Values.resources | nindent 12 }}
