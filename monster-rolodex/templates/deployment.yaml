@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: monster-rolodex
-          image: "ghcr.io/rratillajr/rratillajr/monster-rolodex:latest"
+          image: "ghcr.io/rratillajr/rratillajr/monster-rolodex:v0.0.1-dev.7"
           imagePullPolicy: Always
           ports:
             - name: http
