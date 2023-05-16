@@ -1,10 +1,10 @@
 name: Helm Template
 
 on:
-  workflow_dispatch:
-  # repository_dispatch:
-  #   types:
-  #     - patch-app-image-tag # Event type defined in the triggering workflow
+  # workflow_dispatch:
+   repository_dispatch:
+     types:
+       - patch-app-image-tag
 
 jobs:
   helm_template:
