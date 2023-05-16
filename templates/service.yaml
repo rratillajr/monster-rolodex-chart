@@ -4,12 +4,16 @@ metadata:
   name: {{ template "monster-rolodex.fullname" . }}
   labels:
     app: {{ template "monster-rolodex.name" . }}
+    chart: {{ template "monster-rolodex.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - name: http
-      port: {{ .Values.service.port }}
+    - port: {{ .Values.service.port }}
       targetPort: http
       protocol: TCP
+      name: http
   selector:
     app: {{ template "monster-rolodex.name" . }}
+    release: {{ .Release.Name }}
