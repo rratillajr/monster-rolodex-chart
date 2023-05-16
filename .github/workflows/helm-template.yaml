@@ -18,8 +18,6 @@ jobs:
         uses: azure/setup-helm@v3
         with:
           version: 'v3'
-          token: ${{ secrets.GITHUB_TOKEN }}
-        id: install
 
       - name: Run Helm template
         run: |
