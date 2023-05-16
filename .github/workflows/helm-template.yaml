@@ -14,11 +14,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Helm
-        uses: azure/setup-helm@v3
+      - uses: azure/setup-helm@v3
+        with:
+           token: ${{ secrets.GITHUB_TOKEN }}
+        id: install
 
       - name: Run Helm template
         run: |
-          sed -i 's|${grep -o 'tag:[^ ]*' values.yaml | cut -d ':' -f 2}|${{ github.event.client_payload.imageTag }}|g' values.yaml
+          sed -i "s|${grep -o 'tag:[^ ]*' values.yaml | cut -d ':' -f 2}|${{ github.event.client_payload.imageTag }}|g" values.yaml
           helm template monster-rolodex . --output-dir .
 
