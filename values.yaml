@@ -3,7 +3,7 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/rratillajr/rratillajr/monster-rolodex
-  tag: 8286d99
+  tag: 3d133f8
   pullPolicy: Always
 
 service:
