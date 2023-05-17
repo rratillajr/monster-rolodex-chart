@@ -21,7 +21,10 @@ jobs:
 
       - name: Run Helm template
         run: |
-          # sed -i "s|$(awk '/tag:/ {print $2}' values.yaml | cut -d: -f2)|${{ github.event.client_payload.imageTag }}|g" values.yaml
-          sed -i "s|tag: latest|${{ github.event.client_payload.imageTag }}|g" values.yaml
+          sed -i "s|$(awk '/tag:/ {print $2}' values.yaml | cut -d: -f2)|${{ github.event.client_payload.imageTag }}|g" values.yaml
           helm template monster-rolodex . --output-dir .
-
+          
+      - name: Auto-commit back to repo
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with: 
+          commit_message: "New app image tag: ${{ github.event.client_payload.imageTag }}"
