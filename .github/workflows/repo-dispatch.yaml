@@ -22,7 +22,7 @@ jobs:
 
       - name: Run Helm template
         run: |
-          rm -rf monster-rolodex/*
+          rm -rf monster-rolodex/templates/*
           sed -i "s|$(awk '/tag:/ {print $2}' values.yaml | cut -d: -f2)|${{ github.event.client_payload.imageTag }}|g" values.yaml
           helm template monster-rolodex . --output-dir .
           
