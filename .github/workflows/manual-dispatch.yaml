@@ -19,4 +19,5 @@ jobs:
       - name: Run Helm template
         run: |
           rm -rf monster-rolodex/templates/*
+          pwd;ls -ltra monster-rolodex/templates
           helm template monster-rolodex . --output-dir .
