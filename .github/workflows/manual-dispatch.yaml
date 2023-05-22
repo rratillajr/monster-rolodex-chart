@@ -20,8 +20,7 @@ jobs:
 
       - name: Run Helm template
         run: |
-          rm -rf monster-rolodex/templates/*
-          pwd;ls -ltra monster-rolodex/templates
+          rm -rf monster-rolodex
           helm template monster-rolodex . --output-dir .
       
       - name: Auto-commit back to repo
