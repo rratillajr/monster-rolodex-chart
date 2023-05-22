@@ -1,7 +1,6 @@
 name: Helm Template
 
 on:
-  # workflow_dispatch:
    repository_dispatch:
      types:
        - patch-app-image-tag
