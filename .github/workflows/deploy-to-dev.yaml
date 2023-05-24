@@ -26,7 +26,9 @@ jobs:
         run: |
           export valuesyaml="dev-values.yaml"
           rm -rf dev
-          sed -i "s|$(awk '/tag:/ {print $2}' $valuesyaml | cut -d: -f2)|${{ github.event.client_payload.imageTag }}|g" $valuesyaml
+          if [[ -n "${{ github.event.client_payload.imageTag }}" ]]; then
+            sed -i "s|$(awk '/tag:/ {print $2}' $valuesyaml | cut -d: -f2)|${{ github.event.client_payload.imageTag }}|g" $valuesyaml
+          fi
           helm template monster-rolodex-dev . -f $valuesyaml --output-dir dev
           
       - name: Auto-commit back to repo
