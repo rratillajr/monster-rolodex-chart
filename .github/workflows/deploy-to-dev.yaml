@@ -1,9 +1,11 @@
 name: Deploy to Development
 
 on:
-   repository_dispatch:
-     types:
-       - deploy-to-dev
+  repository_dispatch:
+    types:
+      - deploy-to-dev
+  workflow_dispatch:
+  
 
 jobs:
   helm_template:
