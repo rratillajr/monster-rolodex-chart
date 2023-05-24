@@ -27,7 +27,7 @@ jobs:
           export valuesyaml="dev-values.yaml"
           rm -rf dev
           echo ${{ github.event.client_payload.imageTag }}
-          if [[ -n "${{ github.event.client_payload.imageTag }}" ]]; then
+          if [[ -v "${{ github.event.client_payload.imageTag }}" ]]; then
             sed -i "s|$(awk '/tag:/ {print $2}' $valuesyaml | cut -d: -f2)|${{ github.event.client_payload.imageTag }}|g" $valuesyaml
           fi
           helm template monster-rolodex-dev . -f $valuesyaml --output-dir dev
