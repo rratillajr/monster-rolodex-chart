@@ -10,9 +10,9 @@ metadata:
     release: monster-rolodex-dev
     heritage: Helm
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
-    - port: 31245
+    - port: 80
       targetPort: http
       protocol: TCP
       name: http
