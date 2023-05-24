@@ -17,4 +17,4 @@ spec:
               service:
                 name: monster-rolodex-dev
                 port:
-                  number: 31720
+                  name: http
