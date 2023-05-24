@@ -1,0 +1,42 @@
+---
+# Source: monster-rolodex/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monster-rolodex-dev
+  labels:
+    app: monster-rolodex
+    chart: monster-rolodex-0.1.0
+    release: monster-rolodex-dev
+    heritage: Helm
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: monster-rolodex
+      release: monster-rolodex-dev
+  template:
+    metadata:
+      labels:
+        app: monster-rolodex
+        release: monster-rolodex-dev
+    spec:
+      containers:
+        - name: monster-rolodex
+          image: "ghcr.io/rratillajr/rratillajr/monster-rolodex:development"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {}
