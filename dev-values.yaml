@@ -3,7 +3,7 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/rratillajr/rratillajr/monster-rolodex
-  tag: development ##
+  tag: test-dev ##
   pullPolicy: Always
 
 service:
