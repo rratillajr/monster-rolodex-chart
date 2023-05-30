@@ -5,6 +5,9 @@ on:
     types:
       - deploy-to-dev
   workflow_dispatch:
+
+env:
+  TAG: ${{ github.ref_name }}
   
 
 jobs:
@@ -21,24 +24,20 @@ jobs:
         with:
            token: ${{ secrets.GITHUB_TOKEN }}
         id: install
-        
-      - name: Set image tag
-        id: set-tag
-        run: |
-          if [[ ${{ !github.event.client_payload.imageTag }} ]]; then
-            echo "new_tag=${{ github.ref_name }}" >> $GITHUB_OUTPUT
-          else
-            echo "new_tag=${{ github.event.client_payload.imageTag }}" >> $GITHUB_OUTPUT
-          fi
+          
+      - name: Set image if coming from dispatch
+        if: ${{ github.event.client_payload.imageTag }}
+        env:
+          TAG: ${{ github.event.client_payload.imageTag }}
 
       - name: Run Helm template
         run: |
           export valuesyaml="dev-values.yaml"
           rm -rf dev
-          sed -i "s|$(awk '/tag:/ {print $2}' $valuesyaml | cut -d: -f2)|${{ steps.set-tag.outputs.new_tag }}|g" $valuesyaml
+          sed -i "s|$(awk '/tag:/ {print $2}' $valuesyaml | cut -d: -f2)|${{ env.TAG }}|g" $valuesyaml
           helm template monster-rolodex-dev . -f $valuesyaml --output-dir dev
           
       - name: Auto-commit back to repo
         uses: stefanzweifel/git-auto-commit-action@v4
         with: 
-          commit_message: "New app image tag: ${{ steps.set-tag.outputs.new_tag }}"
+          commit_message: "New app image tag: ${{ env.TAG }}"
