@@ -35,7 +35,7 @@ jobs:
         run: |
           export valuesyaml="dev-values.yaml"
           rm -rf dev
-          sed -i "s|$(awk '/tag:/ {print $2}' $valuesyaml | cut -d: -f2)|${{ env.TAG }}|g" $valuesyaml
+          sed -i "/tag:/ c\  tag: ${{ env.TAG }}" $valuesyaml
           helm template monster-rolodex-dev . -f $valuesyaml --output-dir dev
           
       - name: Auto-commit back to repo
