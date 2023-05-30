@@ -27,6 +27,7 @@ jobs:
           
       - name: Set image if coming from dispatch
         if: ${{ github.event.client_payload.imageTag }}
+        run: echo ${{ env.TAG }}
         env:
           TAG: ${{ github.event.client_payload.imageTag }}
 
