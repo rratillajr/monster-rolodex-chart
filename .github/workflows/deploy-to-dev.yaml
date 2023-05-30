@@ -22,9 +22,7 @@ jobs:
           
       - name: Set tag
         run:
-          export tag=$(awk '/tag:/ {print $2}' "${{ env.VALUES_YAML }}")
-        env:
-          TAG: $tag
+          echo "TAG=$(awk '/tag:/ {print $2}' $env.VALUES_YAML)"
           
       - uses: azure/setup-helm@v3
         with:
