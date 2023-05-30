@@ -8,6 +8,7 @@ on:
   
 env:
   VALUES_YAML: dev-values.yaml
+  TAG: x
 
 jobs:
   deploy-to-dev:
