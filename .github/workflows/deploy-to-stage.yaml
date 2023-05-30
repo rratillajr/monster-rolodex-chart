@@ -10,7 +10,7 @@ env:
   VALUES_YAML: stage-values.yaml
 
 jobs:
-  deploy-to-dev:
+  deploy-to-stage:
     runs-on: ubuntu-latest
 
     steps:
@@ -35,7 +35,7 @@ jobs:
 
 #      - name: Run Helm template
 #        run: |
-#          rm -rf dev
+#          rm -rf stage
 #          sed -i "/tag:/ c\  tag: ${{ env.TAG }}" ${{ env.VALUES_YAML }}
 #          cat ${{ env.VALUES_YAML }} | grep tag
 #          helm template monster-rolodex-stage . -f ${{ env.VALUES_YAML }} --output-dir stage
