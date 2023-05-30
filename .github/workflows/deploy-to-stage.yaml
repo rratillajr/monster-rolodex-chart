@@ -1,0 +1,53 @@
+name: Deploy to Staging
+
+on:
+  repository_dispatch:
+    types:
+      - deploy-to-stage
+  workflow_dispatch:
+  
+env:
+  VALUES_YAML: stage-values.yaml
+
+jobs:
+  deploy-to-dev:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT }}
+          
+#      - name: Get existing image tag
+#        run:
+#          echo "TAG=$(awk '/tag:/ {print $2}' ${{ env.VALUES_YAML }})" >> $GITHUB_ENV
+          
+      - uses: azure/setup-helm@v3
+        with:
+           token: ${{ secrets.GITHUB_TOKEN }}
+        id: install
+          
+#      - name: Set image if coming from dispatch
+#        if: ${{ github.event.client_payload.imageTag }}
+#        run:
+#          echo "TAG=${{ github.event.client_payload.imageTag }}" >> $GITHUB_ENV
+
+#      - name: Run Helm template
+#        run: |
+#          rm -rf dev
+#          sed -i "/tag:/ c\  tag: ${{ env.TAG }}" ${{ env.VALUES_YAML }}
+#          cat ${{ env.VALUES_YAML }} | grep tag
+#          helm template monster-rolodex-stage . -f ${{ env.VALUES_YAML }} --output-dir stage
+
+      - name: Run Helm template
+        run: |
+          rm -rf stage
+          if [ -n "${{ github.event.client_payload.imageTag }}" ]; then
+            sed -i "/tag:/ c\  tag: ${{ github.event.client_payload.imageTag }}" ${{ env.VALUES_YAML }}
+          fi
+          helm template monster-rolodex-stage . -f ${{ env.VALUES_YAML }} --output-dir stage
+          cat stage-values.yaml | grep tag
+          
+      - name: Auto-commit back to repo
+        uses: stefanzweifel/git-auto-commit-action@v4
