@@ -7,7 +7,9 @@ on:
   workflow_dispatch:
 
 env:
-  TAG: ${{ github.ref_name }}
+  #TAG: ${{ github.ref_name }}
+  VALUES_YAML: dev-values.yaml
+  TAG: ${{ awk '/tag:/ {print $2}' env.VALUESYAML }}
   
 
 jobs:
@@ -33,10 +35,9 @@ jobs:
 
       - name: Run Helm template
         run: |
-          export valuesyaml="dev-values.yaml"
           rm -rf dev
-          sed -i "/tag:/ c\  tag: ${{ env.TAG }}" $valuesyaml
-          helm template monster-rolodex-dev . -f $valuesyaml --output-dir dev
+          sed -i "/tag:/ c\  tag: ${{ env.TAG }}" ${{ env.VALUES_YAML }}
+          helm template monster-rolodex-dev . -f ${{ env.VALUES_YAML }} --output-dir dev
           
       - name: Auto-commit back to repo
         uses: stefanzweifel/git-auto-commit-action@v4
