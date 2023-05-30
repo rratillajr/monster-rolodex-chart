@@ -8,7 +8,6 @@ on:
   
 env:
   VALUES_YAML: dev-values.yaml
-  TAG: x
 
 jobs:
   deploy-to-dev:
@@ -22,7 +21,7 @@ jobs:
           
       - name: Set tag
         run:
-          echo "TAG=$(awk '/tag:/ {print $2}' $env.VALUES_YAML)"
+          echo "TAG=$(awk '/tag:/ {print $2}' ${{ env.VALUES_YAML }})" >> $GITHUB_ENV
           
       - uses: azure/setup-helm@v3
         with:
