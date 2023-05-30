@@ -8,7 +8,7 @@ on:
   
 env:
   VALUES_YAML: dev-values.yaml
-  TAG: main
+  TAG: $(awk '/tag:/ {print $2}' "${{ env.VALUES_YAML }}")
 
 jobs:
   deploy-to-dev:
@@ -20,11 +20,11 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           
-      - name: Set env variables
-        run:
-          export tag=$(awk '/tag:/ {print $2}' "${{ env.VALUES_YAML }}")
-        env:
-          TAG: $tag
+#      - name: Set env variables
+#        run:
+#          export tag=$(awk '/tag:/ {print $2}' "${{ env.VALUES_YAML }}")
+#        env:
+#          TAG: $tag
           
 
       - uses: azure/setup-helm@v3
