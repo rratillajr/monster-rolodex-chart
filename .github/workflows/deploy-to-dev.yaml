@@ -47,6 +47,7 @@ jobs:
             sed -i "/tag:/ c\  tag: ${{ github.event.client_payload.imageTag }}" ${{ env.VALUES_YAML }}
           fi
           helm template monster-rolodex-dev . -f ${{ env.VALUES_YAML }} --output-dir dev
+          cat dev-values.yaml | grep tag
           
       - name: Auto-commit back to repo
         uses: stefanzweifel/git-auto-commit-action@v4
