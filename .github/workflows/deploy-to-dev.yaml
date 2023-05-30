@@ -22,7 +22,7 @@ jobs:
           
       - name: Set env variables
         run:
-          export tag = $(awk '/tag:/ {print $2}' "${{ env.VALUES_YAML }}")
+          export tag=$(awk '/tag:/ {print $2}' $env.VALUES_YAML)
         env:
           TAG: $tag
           
@@ -42,6 +42,7 @@ jobs:
         run: |
           rm -rf dev
           sed -i "/tag:/ c\  tag: ${{ env.TAG }}" ${{ env.VALUES_YAML }}
+          cat ${{ env.VALUES_YAML }} | grep tag
           helm template monster-rolodex-dev . -f ${{ env.VALUES_YAML }} --output-dir dev
           
       - name: Auto-commit back to repo
