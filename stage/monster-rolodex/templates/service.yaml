@@ -1,0 +1,21 @@
+---
+# Source: monster-rolodex/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: monster-rolodex-stage
+  labels:
+    app: monster-rolodex
+    chart: monster-rolodex-0.1.0
+    release: monster-rolodex-stage
+    heritage: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: monster-rolodex
+    release: monster-rolodex-stage
