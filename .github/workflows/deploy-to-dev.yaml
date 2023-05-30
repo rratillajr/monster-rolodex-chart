@@ -22,7 +22,7 @@ jobs:
           
       - name: Set env variables
         run:
-          export tag = $(awk '/tag:/ {print $2}' ${{ env.VALUES_YAML }})
+          export tag = $(awk '/tag:/ {print $2}' "${{ env.VALUES_YAML }}")
         env:
           TAG: $tag
           
