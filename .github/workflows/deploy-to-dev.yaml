@@ -19,29 +19,34 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           
-      - name: Set tag
-        run:
-          echo "TAG=$(awk '/tag:/ {print $2}' ${{ env.VALUES_YAML }})" >> $GITHUB_ENV
+#      - name: Get existing image tag
+#        run:
+#          echo "TAG=$(awk '/tag:/ {print $2}' ${{ env.VALUES_YAML }})" >> $GITHUB_ENV
           
       - uses: azure/setup-helm@v3
         with:
            token: ${{ secrets.GITHUB_TOKEN }}
         id: install
           
-      - name: Set image if coming from dispatch
-        if: ${{ github.event.client_payload.imageTag }}
-        run: echo ${{ env.TAG }}
-        env:
-          TAG: ${{ github.event.client_payload.imageTag }}
+#      - name: Set image if coming from dispatch
+#        if: ${{ github.event.client_payload.imageTag }}
+#        run:
+#          echo "TAG=${{ github.event.client_payload.imageTag }}" >> $GITHUB_ENV
+
+#      - name: Run Helm template
+#        run: |
+#          rm -rf dev
+#          sed -i "/tag:/ c\  tag: ${{ env.TAG }}" ${{ env.VALUES_YAML }}
+#          cat ${{ env.VALUES_YAML }} | grep tag
+#          helm template monster-rolodex-dev . -f ${{ env.VALUES_YAML }} --output-dir dev
 
       - name: Run Helm template
         run: |
           rm -rf dev
-          sed -i "/tag:/ c\  tag: ${{ env.TAG }}" ${{ env.VALUES_YAML }}
-          cat ${{ env.VALUES_YAML }} | grep tag
+          if [ -n "${{ github.event.client_payload.imageTag }}" ]; then
+            sed -i "/tag:/ c\  tag: ${{ github.event.client_payload.imageTag }}" ${{ env.VALUES_YAML }}
+          fi
           helm template monster-rolodex-dev . -f ${{ env.VALUES_YAML }} --output-dir dev
           
       - name: Auto-commit back to repo
         uses: stefanzweifel/git-auto-commit-action@v4
-        with: 
-          commit_message: "New app image tag: ${{ env.TAG }}"
